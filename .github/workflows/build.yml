@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install OpenOrbis PS4 SDK
         run: |
@@ -25,7 +25,7 @@ jobs:
           make
 
       - name: Upload PS4 PKG
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CS16_PS4_Build
           path: build/*.pkg
