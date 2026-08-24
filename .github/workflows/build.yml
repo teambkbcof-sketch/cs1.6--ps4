@@ -1,0 +1,31 @@
+name: Build PS4 CS1.6
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install OpenOrbis PS4 SDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake clang
+          git clone https://github.com/OpenOrbis/toolchain.git /opt/OpenOrbis
+
+      - name: Build Project
+        run: |
+          export OO_PS4_TOOLCHAIN=/opt/OpenOrbis
+          mkdir build && cd build
+          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/OpenOrbis/cmake/linux-toolchain.cmake ..
+          make
+
+      - name: Upload PS4 PKG
+        uses: actions/upload-artifact@v3
+        with:
+          name: CS16_PS4_Build
+          path: build/*.pkg
